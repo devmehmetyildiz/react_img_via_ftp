@@ -5,11 +5,11 @@ const defaultImageSrc = '/img/user.png'
 const initialfieldvalues = {
     id: 0,
     name: "",
-    filefolder: '',
-    filetype: '',
+    filefolder: ' ',
+    filetype: ' ',
     downloadedcount: 0,
-    lastdownloadeduser: '',
-    lastdownloadedip: '',
+    lastdownloadeduser: ' ',
+    lastdownloadedip: ' ',
     filepath: defaultImageSrc,
     imageFile: null,
     concurrencyStamp: '',
@@ -25,6 +25,7 @@ const initialfieldvalues = {
 export default function Employee(props) {
     const { addOrEdit } = props
     const [values, setValues] = useState(initialfieldvalues)
+
     const [errors, setErrors] = useState({})
     const handleInputChange = (e) => {
         const { name, value } = e.target
@@ -65,44 +66,16 @@ export default function Employee(props) {
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()) {
-              const formData = new FormData();
-           // const formData = {
-                 //   formData.append('id', values.id)
-                //    formData.append('name', values.name)
-                 //   formData.append('filefolder', values.filefolder)
-                 //   formData.append('filetype', values.filetype)
-                 //   formData.append('downloadedcount', values.downloadedcount)
-                 //   formData.append('lastdownloadeduser', values.lastdownloadeduser)
-                 //   formData.append('lastdownloadedip', values.lastdownloadedip)
-                 //   formData.append('filepath', values.filepath)
-                    formData.append('imageFile', values.imageFile)
-                //    formData.append('concurrencyStamp', values.concurrencyStamp)
-                //    formData.append('createdUser', values.createdUser)
-                //    formData.append('updatedUser', values.updatedUser)
-               //     formData.append('deleteUser', values.deleteUser)
-                //    formData.append('createTime', values.createTime)
-                //    formData.append('updateTime', values.updateTime)
-                //    formData.append('deleteTime', values.deleteTime)
-                //    formData.append('isActive', values.isActive)
-              /*   'id': values.id,
-                'name': values.name,
-                'filefolder': values.filefolder,
-                'filetype': values.filetype,
-                'downloadedcount': values.downloadedcount,
-                'lastdownloadeduser': values.lastdownloadeduser,
-                'lastdownloadedip': values.lastdownloadedip,
-                'filepath': values.filepath,
-                'imageFile': values.imageFile,
-                'concurrencyStamp': values.concurrencyStamp,
-                'createdUser': values.createdUser,
-                'updatedUser': values.updatedUser,
-                'deleteUser': values.deleteUser,
-                'createTime': values.createTime,
-                'updateTime': values.updateTime,
-                'deleteTime': values.deleteTime,
-                'isActive': values.isActive */
-           // }
-            console.log('formDataback: ', formData);
+            console.log('values: ', values);
+            const formData = new FormData();
+            formData.append('name', "");
+            formData.append('filefolder', "");
+            formData.append('filepath', "");
+            formData.append('filetype', "");
+            formData.append('downloadedcount', 0);
+            formData.append('lastdownloadeduser', "");
+            formData.append('lastdownloadedip', "");
+            formData.append('imageFile', values.imageFile);
             addOrEdit(formData, resetForm)
         }
     }
