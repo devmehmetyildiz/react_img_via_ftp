@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 
 const defaultImageSrc = '/img/user.png'
@@ -23,7 +24,6 @@ const initialfieldvalues = {
 }
 
 export default function Employee(props) {
-    const { addOrEdit } = props
     const [values, setValues] = useState(initialfieldvalues)
 
     const [errors, setErrors] = useState({})
@@ -34,7 +34,6 @@ export default function Employee(props) {
     const showPreview = e => {
         if (e.target.files && e.target.files[0]) {
             let imageFile = e.target.files[0]
-            console.log('e.target.files[0]: ', e.target.files[0]);
             const reader = new FileReader()
             reader.onload = x => {
                 setValues({
@@ -60,6 +59,23 @@ export default function Employee(props) {
         return Object.values(temp).every(x => x == true)
     }
 
+    const employeeAPI = (url = "http://localhost:34891/api/File/Add") => {
+        return {
+            fetchAll: () => axios.get(url),
+            create: newRecord => axios.post(url, newRecord),
+            update: (id, updatedRecord) => axios.put(url + id, updatedRecord),
+            delete: id => axios.delete(url + id)
+        }
+    }
+    const addOrEdit = (formData) => {
+        employeeAPI().create(formData).then(response => {
+            console.log('response: ', response);
+            console.log("basarılı")
+        }).catch(error => {
+            console.log('erroraxios: ', error.response.data);
+        })
+    }
+
     const resetForm = () => {
         setValues(initialfieldvalues)
     }
@@ -67,18 +83,39 @@ export default function Employee(props) {
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()) {
-            console.log('values: ', values);
-            const formData = new FormData();
-            formData.append('name', "");
-            formData.append('filefolder', "");
-            formData.append('filepath', "");
-            formData.append('filetype', "");
-            formData.append('downloadedcount', 0);
-            formData.append('lastdownloadeduser', "");
-            formData.append('lastdownloadedip', "");
-            formData.append('file', values.imageFile);
-            addOrEdit(formData, resetForm)
+              const formData = new FormData();
+             /*  formData.append('name', "");
+              formData.append('filefolder', "");
+              formData.append('filepath', "");
+              formData.append('filetype', "");
+              formData.append('downloadedcount', 0);
+              formData.append('lastdownloadeduser', "");
+              formData.append('lastdownloadedip', ""); */
+              console.log('values.imageFile: ', values.imageFile);
+              formData.append('model', values.imageFile);
+              addOrEdit(formData)
+
+           /*  var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "multipart/form-data");
+
+            var formdata = new FormData();
+          
+            formdata.append('file', values.imageFile);
+
+            var requestOptions = {
+                method: 'PUT',
+                headers: myHeaders,
+                body: formdata,
+                redirect: 'follow'
+            };
+
+            fetch("http://localhost:34891/api/File/Add", requestOptions)
+                .then(response => response.text())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error)); */
+
         }
+
     }
     const applyerrorclass = field => ((field in errors && errors[field] == false) ? ' invalid-field' : '')
     return (
