@@ -34,6 +34,7 @@ export default function Employee(props) {
     const showPreview = e => {
         if (e.target.files && e.target.files[0]) {
             let imageFile = e.target.files[0]
+            console.log('e.target.files[0]: ', e.target.files[0]);
             const reader = new FileReader()
             reader.onload = x => {
                 setValues({
@@ -75,7 +76,7 @@ export default function Employee(props) {
             formData.append('downloadedcount', 0);
             formData.append('lastdownloadeduser', "");
             formData.append('lastdownloadedip', "");
-            formData.append('imageFile', values.imageFile);
+            formData.append('file', values.imageFile);
             addOrEdit(formData, resetForm)
         }
     }
